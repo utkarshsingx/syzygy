@@ -5,6 +5,12 @@ const BUNDLE_ID = 'com.bloom.app';
 const SCHEME = 'bloom';
 const DEEP_LINK_HOST = 'bloom.app';
 
+// google-services.json is gitignored; provide via EAS secret file at build time.
+// Path resolution: relative to project root. Set GOOGLE_SERVICES_FILE in env to override.
+const GOOGLE_SERVICES = process.env.GOOGLE_SERVICES_FILE ?? './google-services.json';
+const GOOGLE_SERVICES_PLIST =
+  process.env.GOOGLE_SERVICES_PLIST ?? './GoogleService-Info.plist';
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: 'Bloom',
@@ -25,6 +31,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ios: {
     bundleIdentifier: BUNDLE_ID,
     supportsTablet: true,
+    googleServicesFile: GOOGLE_SERVICES_PLIST,
     config: {
       usesNonExemptEncryption: false,
     },
@@ -34,22 +41,17 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     versionCode: 1,
     edgeToEdgeEnabled: true,
     predictiveBackGestureEnabled: false,
+    googleServicesFile: GOOGLE_SERVICES,
     adaptiveIcon: {
       foregroundImage: './assets/adaptive-icon.png',
       backgroundColor: '#F5EFE4',
     },
-    permissions: [
-      'NOTIFICATIONS',
-      'RECORD_AUDIO',
-      'POST_NOTIFICATIONS',
-    ],
+    permissions: ['NOTIFICATIONS', 'RECORD_AUDIO', 'POST_NOTIFICATIONS'],
     intentFilters: [
       {
         action: 'VIEW',
         autoVerify: true,
-        data: [
-          { scheme: 'https', host: DEEP_LINK_HOST, pathPrefix: '/share' },
-        ],
+        data: [{ scheme: 'https', host: DEEP_LINK_HOST, pathPrefix: '/share' }],
         category: ['BROWSABLE', 'DEFAULT'],
       },
       {
@@ -63,12 +65,17 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     favicon: './assets/favicon.png',
   },
   plugins: [
+    '@react-native-firebase/app',
+    '@react-native-firebase/auth',
+    '@react-native-firebase/messaging',
     [
-      'expo-font',
+      'expo-build-properties',
       {
-        fonts: [],
+        ios: { useFrameworks: 'static' },
+        android: { compileSdkVersion: 35, targetSdkVersion: 35 },
       },
     ],
+    ['expo-font', { fonts: [] }],
     'expo-splash-screen',
     'expo-notifications',
     [
@@ -80,7 +87,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ],
   extra: {
     eas: {
-      // Populated after `eas init`.
       projectId: process.env.EAS_PROJECT_ID ?? undefined,
     },
   },

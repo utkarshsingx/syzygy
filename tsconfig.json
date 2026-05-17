@@ -8,7 +8,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["nativewind/types"],
+    "types": ["nativewind/types", "jest", "node"],
     "jsx": "react-jsx"
   },
   "include": [

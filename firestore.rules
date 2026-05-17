@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthed() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isAuthed() && request.auth.uid == uid;
+    }
+
+    function isCoupleMember(coupleId) {
+      return isAuthed() && request.auth.uid in
+        get(/databases/$(database)/documents/couples/$(coupleId)).data.members;
+    }
+
+    // --- Per-user data ---
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+
+      match /cycleEntries/{entryId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      match /journal/{entryId} {
+        allow read, write: if isOwner(uid);
+      }
+    }
+
+    // --- Partner couples ---
+    match /couples/{coupleId} {
+      allow read: if isAuthed() && request.auth.uid in resource.data.members;
+
+      // Creator can mint the couple with themselves in slot 0 and null in slot 1.
+      allow create: if isAuthed()
+        && request.resource.data.members.size() == 2
+        && request.resource.data.members[0] == request.auth.uid
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.status == 'pending';
+
+      // Updates can't change membership; status flips to 'linked' on accept.
+      allow update: if isAuthed()
+        && request.auth.uid in resource.data.members
+        && request.resource.data.createdBy == resource.data.createdBy;
+
+      allow delete: if false;
+
+      match /messages/{messageId} {
+        allow read: if isCoupleMember(coupleId);
+        allow create: if isCoupleMember(coupleId)
+          && request.resource.data.from == request.auth.uid;
+        // Only updating readAt is allowed (recipient marks read).
+        allow update: if isCoupleMember(coupleId)
+          && request.resource.data.from == resource.data.from
+          && request.resource.data.createdAt == resource.data.createdAt;
+        allow delete: if false;
+      }
+    }
+
+    // --- Invite-code reverse index ---
+    match /inviteCodes/{code} {
+      allow read: if isAuthed(); // needed to look up code on share accept
+      allow create: if isAuthed() && request.resource.data.createdBy == request.auth.uid;
+      allow update, delete: if false;
+    }
+  }
+}

@@ -11,6 +11,7 @@ import { SplashGate } from '@/components/system/SplashGate';
 import { ErrorBoundary } from '@/components/system/ErrorBoundary';
 import { ToastProvider } from '@/components/ui/Toast';
 import { ThemeProvider } from '@/theme/ThemeProvider';
+import { AuthProvider } from '@/auth/AuthProvider';
 import { RootNavigator } from '@/navigation/RootNavigator';
 import { linking } from '@/navigation/linking';
 import { colors } from '@/theme/colors';
@@ -24,10 +25,12 @@ export default function App() {
             <ToastProvider>
               <BottomSheetModalProvider>
                 <SplashGate>
-                  <NavigationContainer linking={linking}>
-                    <StatusBar style="dark" backgroundColor={colors.cream} />
-                    <RootNavigator />
-                  </NavigationContainer>
+                  <AuthProvider>
+                    <NavigationContainer linking={linking}>
+                      <StatusBar style="dark" backgroundColor={colors.cream} />
+                      <RootNavigator />
+                    </NavigationContainer>
+                  </AuthProvider>
                 </SplashGate>
               </BottomSheetModalProvider>
             </ToastProvider>

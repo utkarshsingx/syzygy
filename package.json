@@ -15,7 +15,9 @@
     "build:android:dev": "eas build -p android --profile development",
     "build:android:preview": "eas build -p android --profile preview",
     "build:android:prod": "eas build -p android --profile production",
-    "submit:android": "eas submit -p android --profile production"
+    "submit:android": "eas submit -p android --profile production",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@expo-google-fonts/fraunces": "^0.4.1",
@@ -23,6 +25,10 @@
     "@gorhom/bottom-sheet": "^5.2.14",
     "@hookform/resolvers": "^5.2.2",
     "@react-native-async-storage/async-storage": "2.2.0",
+    "@react-native-firebase/app": "^24.0.0",
+    "@react-native-firebase/auth": "^24.0.0",
+    "@react-native-firebase/firestore": "^24.0.0",
+    "@react-native-firebase/messaging": "^24.0.0",
     "@react-navigation/bottom-tabs": "^7.16.1",
     "@react-navigation/native": "^7.2.4",
     "@react-navigation/native-stack": "^7.15.1",
@@ -31,6 +37,7 @@
     "expo": "~54.0.33",
     "expo-av": "~16.0.8",
     "expo-background-fetch": "~14.0.9",
+    "expo-build-properties": "~1.0.10",
     "expo-constants": "~18.0.13",
     "expo-device": "~8.0.10",
     "expo-font": "~14.0.11",
@@ -62,11 +69,16 @@
   },
   "devDependencies": {
     "@react-native/eslint-config": "^0.85.3",
+    "@testing-library/react-native": "^13.3.3",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.8.0",
     "@types/react": "~19.1.0",
     "babel-plugin-module-resolver": "^5.0.3",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
+    "jest": "^29.7.0",
+    "jest-expo": "^55.0.17",
     "prettier": "^3.8.3",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.9.2"
