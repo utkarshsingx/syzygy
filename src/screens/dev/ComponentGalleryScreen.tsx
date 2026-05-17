@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react';
-import { ScrollView, View, Text, Switch } from 'react-native';
+import { ScrollView, View, Text, Switch, useWindowDimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Atmosphere } from '@/components/atmosphere/Atmosphere';
+import { BloomCanvas } from '@/components/bloom';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
@@ -23,9 +24,14 @@ export function ComponentGalleryScreen() {
   const toast = useToast();
   const sheetRef = useRef<BottomSheet>(null);
   const [text, setText] = useState('');
+  const [dayInPhase, setDayInPhase] = useState(3);
+  const { width } = useWindowDimensions();
   const reducedOverride = useUserStore((s) => s.reducedMotionOverride);
   const setReducedOverride = useUserStore((s) => s.setReducedMotionOverride);
+  const bloomQuality = useUserStore((s) => s.bloomQuality);
+  const setBloomQuality = useUserStore((s) => s.setBloomQuality);
   const { phase, setPhase, accent } = useTheme();
+  const bloomSize = Math.min(width - 40, 320);
 
   return (
     <SafeAreaView className="flex-1" edges={['top']}>
@@ -42,8 +48,16 @@ export function ComponentGalleryScreen() {
           M2 design-system sandbox. Long-press the Settings tab to reach this screen.
         </Text>
 
-        <Section title="Theme phase">
-          <View className="flex-row flex-wrap gap-2">
+        <Section title="Bloom (Skia)">
+          <View className="items-center">
+            <BloomCanvas
+              width={bloomSize}
+              height={bloomSize}
+              phase={phase}
+              dayInPhase={dayInPhase}
+            />
+          </View>
+          <View className="flex-row flex-wrap gap-2 mt-3 justify-center">
             {PHASES.map((p) => (
               <Button
                 key={p}
@@ -55,8 +69,32 @@ export function ComponentGalleryScreen() {
               </Button>
             ))}
           </View>
+          <View className="flex-row gap-2 mt-3 justify-center">
+            {[1, 3, 5, 7].map((d) => (
+              <Button
+                key={d}
+                size="sm"
+                variant={dayInPhase === d ? 'primary' : 'ghost'}
+                onPress={() => setDayInPhase(d)}
+              >
+                {`day ${d}`}
+              </Button>
+            ))}
+          </View>
+          <View className="flex-row gap-2 mt-3 justify-center">
+            {(['auto', 'high', 'low'] as const).map((q) => (
+              <Button
+                key={q}
+                size="sm"
+                variant={bloomQuality === q ? 'soft' : 'ghost'}
+                onPress={() => setBloomQuality(q)}
+              >
+                {`quality: ${q}`}
+              </Button>
+            ))}
+          </View>
           <View
-            className="h-8 rounded-pill mt-3"
+            className="h-2 rounded-pill mt-3"
             style={{ backgroundColor: accent }}
           />
         </Section>
