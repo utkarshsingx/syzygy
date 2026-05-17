@@ -20,6 +20,7 @@ export type RootStackParamList = {
   Auth: NavigatorScreenParams<AuthStackParamList>;
   AppTabs: NavigatorScreenParams<AppTabsParamList>;
   ShareAccept: { inviteCode: string };
+  ComponentGallery: undefined;
 };
 
 declare global {

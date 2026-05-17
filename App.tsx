@@ -9,6 +9,8 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import { SplashGate } from '@/components/system/SplashGate';
 import { ErrorBoundary } from '@/components/system/ErrorBoundary';
+import { ToastProvider } from '@/components/ui/Toast';
+import { ThemeProvider } from '@/theme/ThemeProvider';
 import { RootNavigator } from '@/navigation/RootNavigator';
 import { linking } from '@/navigation/linking';
 import { colors } from '@/theme/colors';
@@ -18,14 +20,18 @@ export default function App() {
     <ErrorBoundary>
       <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.cream }}>
         <SafeAreaProvider>
-          <BottomSheetModalProvider>
-            <SplashGate>
-              <NavigationContainer linking={linking}>
-                <StatusBar style="dark" backgroundColor={colors.cream} />
-                <RootNavigator />
-              </NavigationContainer>
-            </SplashGate>
-          </BottomSheetModalProvider>
+          <ThemeProvider>
+            <ToastProvider>
+              <BottomSheetModalProvider>
+                <SplashGate>
+                  <NavigationContainer linking={linking}>
+                    <StatusBar style="dark" backgroundColor={colors.cream} />
+                    <RootNavigator />
+                  </NavigationContainer>
+                </SplashGate>
+              </BottomSheetModalProvider>
+            </ToastProvider>
+          </ThemeProvider>
         </SafeAreaProvider>
       </GestureHandlerRootView>
     </ErrorBoundary>

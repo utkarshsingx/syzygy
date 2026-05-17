@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthStack } from './AuthStack';
 import { AppTabs } from './AppTabs';
 import { ShareAcceptScreen } from '@/screens/ShareAcceptScreen';
+import { ComponentGalleryScreen } from '@/screens/dev/ComponentGalleryScreen';
 import { useUserStore } from '@/stores/useUserStore';
 import type { RootStackParamList } from './types';
 
@@ -22,6 +23,13 @@ export function RootNavigator() {
         component={ShareAcceptScreen}
         options={{ presentation: 'modal' }}
       />
+      {__DEV__ ? (
+        <Stack.Screen
+          name="ComponentGallery"
+          component={ComponentGalleryScreen}
+          options={{ presentation: 'modal', headerShown: true, title: 'Gallery' }}
+        />
+      ) : null}
     </Stack.Navigator>
   );
 }
