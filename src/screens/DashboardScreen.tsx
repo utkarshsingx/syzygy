@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { View, Text, useWindowDimensions, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Atmosphere } from '@/components/atmosphere/Atmosphere';
@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Reveal } from '@/components/motion/Reveal';
 import { SplitText } from '@/components/motion/SplitText';
+import { QuickLogFAB } from '@/components/log/QuickLogFAB';
+import { LogEntryModal, type LogEntryModalHandle } from '@/components/log/LogEntryModal';
 import { useUserStore } from '@/stores/useUserStore';
 import { usePhase } from '@/hooks/usePhase';
 import { fonts } from '@/theme/typography';
@@ -24,10 +26,11 @@ const greetings: Record<CyclePhase, string> = {
 
 export function DashboardScreen() {
   const reset = useUserStore((s) => s.reset);
+  const name = useUserStore((s) => s.name);
   const { width } = useWindowDimensions();
   const phaseSummary = usePhase();
+  const logModal = useRef<LogEntryModalHandle>(null);
 
-  // Until cycle data exists, let the user preview phases via chips.
   const [previewPhase, setPreviewPhase] = useState<CyclePhase>('follicular');
   const phase: CyclePhase = phaseSummary?.phase ?? previewPhase;
   const dayInPhase = phaseSummary?.dayInPhase ?? 3;
@@ -38,7 +41,7 @@ export function DashboardScreen() {
     <SafeAreaView className="flex-1" edges={['top']}>
       <Atmosphere intensity="medium" />
 
-      <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: 140 }}>
         <View className="px-6 pt-4">
           <SplitText
             style={{
@@ -49,14 +52,14 @@ export function DashboardScreen() {
             }}
             stagger={40}
           >
-            {greetings[phase]}
+            {name ? `Hello, ${name}.` : greetings[phase]}
           </SplitText>
           <Reveal direction="up" delay={400}>
             <Text className="font-body text-sm text-ink-100/80 mt-1">
               {phaseSummary
                 ? `Day ${phaseSummary.cycleDay} of ${phaseSummary.cycleLength}` +
                   ` · ${phaseSummary.daysUntilNextPeriod} days until next period`
-                : 'Log your first period start in Onboarding to see predictions.'}
+                : 'Tap + to log your first entry — predictions begin once a period start is recorded.'}
             </Text>
           </Reveal>
         </View>
@@ -99,7 +102,8 @@ export function DashboardScreen() {
                 {phase.charAt(0).toUpperCase() + phase.slice(1)} phase
               </Text>
               <Text className="font-body text-sm text-ink-100">
-                Day {dayInPhase} in phase · confidence {Math.round(phaseSummary.confidence * 100)}%
+                Day {dayInPhase} in phase · confidence{' '}
+                {Math.round(phaseSummary.confidence * 100)}%
               </Text>
               <View
                 className="h-2 rounded-pill mt-3"
@@ -120,6 +124,9 @@ export function DashboardScreen() {
           ) : null}
         </View>
       </ScrollView>
+
+      <QuickLogFAB onPress={() => logModal.current?.open()} />
+      <LogEntryModal ref={logModal} />
     </SafeAreaView>
   );
 }

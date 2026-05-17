@@ -68,6 +68,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     '@react-native-firebase/app',
     '@react-native-firebase/auth',
     '@react-native-firebase/messaging',
+    '@react-native-community/datetimepicker',
     [
       'expo-build-properties',
       {
