@@ -2,6 +2,8 @@
 
 A botanical period & cycle tracker for Android (and later iOS), built as a React Native port of the Periods/Bloom web app.
 
+> **New to this project?** Start with **[SETUP_GUIDE.md](./SETUP_GUIDE.md)** — a step-by-step beginner walkthrough from "fresh computer" to "live on the Play Store," written in plain language. The two shorter docs ([ENV_SETUP.md](./ENV_SETUP.md) and [LAUNCH_CHECKLIST.md](./LAUNCH_CHECKLIST.md)) are concise references for when you already know what you're doing.
+
 ## Stack
 
 - **Expo SDK 54** (managed) + **React Native 0.81** + **React 19** + **TypeScript** strict
@@ -101,4 +103,6 @@ eas.json                     → development / preview / production profiles
 
 ## What needs you
 
-See [ENV_SETUP.md](./ENV_SETUP.md) to enable Firebase, then [LAUNCH_CHECKLIST.md](./LAUNCH_CHECKLIST.md) to ship to Play Store.
+If you're new to this stack, follow the friendly **[SETUP_GUIDE.md](./SETUP_GUIDE.md)** end-to-end.
+
+If you're experienced, jump straight to [ENV_SETUP.md](./ENV_SETUP.md) (Firebase + dev build) and [LAUNCH_CHECKLIST.md](./LAUNCH_CHECKLIST.md) (Play Store).
