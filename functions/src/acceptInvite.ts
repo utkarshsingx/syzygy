@@ -1,5 +1,5 @@
 import { onCall, HttpsError } from 'firebase-functions/v2/https';
-import { getFirestore, FieldValue } from 'firebase-admin/firestore';
+import { getFirestore } from 'firebase-admin/firestore';
 
 // Atomic invite-acceptance — replaces the client-side write so we can enforce
 // invariants the security rules can't easily express (exactly-once, expiry).

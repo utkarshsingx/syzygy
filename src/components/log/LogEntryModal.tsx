@@ -8,6 +8,7 @@ import { PressScale } from '@/components/motion/PressScale';
 import { useToast } from '@/components/ui/Toast';
 import { useAuth } from '@/auth/AuthProvider';
 import { cyclesRepo } from '@/data/cycles.repo';
+import { useFxStore } from '@/stores/useFxStore';
 import { colors } from '@/theme/colors';
 import { MOODS, SYMPTOMS } from '@/types';
 import type { Flow, Mood, Symptom } from '@/types';
@@ -96,6 +97,7 @@ export const LogEntryModal = forwardRef<LogEntryModalHandle>(function LogEntryMo
         notes,
         isPeriodStart,
       });
+      useFxStore.getState().fireBurst();
       toast.show('Logged.', 'success');
       sheetRef.current?.close();
     } catch (e) {

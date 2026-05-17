@@ -10,6 +10,7 @@ import { SplitText } from '@/components/motion/SplitText';
 import { QuickLogFAB } from '@/components/log/QuickLogFAB';
 import { LogEntryModal, type LogEntryModalHandle } from '@/components/log/LogEntryModal';
 import { useUserStore } from '@/stores/useUserStore';
+import { useCycleStore } from '@/stores/useCycleStore';
 import { usePhase } from '@/hooks/usePhase';
 import { fonts } from '@/theme/typography';
 import { colors, phaseColors } from '@/theme/colors';
@@ -27,6 +28,7 @@ const greetings: Record<CyclePhase, string> = {
 export function DashboardScreen() {
   const reset = useUserStore((s) => s.reset);
   const name = useUserStore((s) => s.name);
+  const loading = useCycleStore((s) => s.loading);
   const { width } = useWindowDimensions();
   const phaseSummary = usePhase();
   const logModal = useRef<LogEntryModalHandle>(null);
@@ -56,10 +58,12 @@ export function DashboardScreen() {
           </SplitText>
           <Reveal direction="up" delay={400}>
             <Text className="font-body text-sm text-ink-100/80 mt-1">
-              {phaseSummary
-                ? `Day ${phaseSummary.cycleDay} of ${phaseSummary.cycleLength}` +
-                  ` · ${phaseSummary.daysUntilNextPeriod} days until next period`
-                : 'Tap + to log your first entry — predictions begin once a period start is recorded.'}
+              {loading
+                ? 'Syncing your bloom…'
+                : phaseSummary
+                  ? `Day ${phaseSummary.cycleDay} of ${phaseSummary.cycleLength}` +
+                    ` · ${phaseSummary.daysUntilNextPeriod} days until next period`
+                  : 'Tap + to log your first entry — predictions begin once a period start is recorded.'}
             </Text>
           </Reveal>
         </View>
