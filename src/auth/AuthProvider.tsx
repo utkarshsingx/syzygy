@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import functions from '@react-native-firebase/functions';
 import { auth, initFirebase } from '@/data/firebase';
 import { cyclesRepo } from '@/data/cycles.repo';
 import { journalRepo } from '@/data/journal.repo';
@@ -9,6 +10,7 @@ import { useCycleStore, derivePeriodData } from '@/stores/useCycleStore';
 import { useJournalStore } from '@/stores/useJournalStore';
 import { usePartnerStore } from '@/stores/usePartnerStore';
 import { useUserStore } from '@/stores/useUserStore';
+import { registerForRemoteMessages, teardownRemoteMessages } from '@/notifications/fcm';
 import type { FirebaseAuthTypes } from '@react-native-firebase/auth';
 
 type AuthStatus = 'booting' | 'anonymous' | 'authenticated' | 'signedOut' | 'error';
@@ -96,6 +98,9 @@ export function AuthProvider({ children }: Props) {
         if (__DEV__) console.warn('[AuthProvider] usersRepo.upsert', e);
       });
 
+    // Register for FCM pushes (idempotent — re-runs whenever uid changes).
+    registerForRemoteMessages(uid);
+
     unsubsRef.current.push(
       cyclesRepo.subscribe(uid, (entries) => {
         useCycleStore.getState().setEntries(entries);
@@ -133,6 +138,7 @@ export function AuthProvider({ children }: Props) {
         /* noop */
       }
     }
+    teardownRemoteMessages();
   }
 
   const value = useMemo<AuthContextValue>(
@@ -165,10 +171,16 @@ export function AuthProvider({ children }: Props) {
         // onAuthStateChanged will fire with null, then immediately re-anon.
       },
       async deleteAccount() {
-        // Full server-side cascade lands in M6's Cloud Function.
-        // For now: delete the local auth user; repo data remains until the
-        // function is wired (security rules deny orphan reads).
-        await auth().currentUser?.delete();
+        // Server-side cascade: Cloud Function recursively deletes user data,
+        // unlinks the couple, then removes the auth user. If the function call
+        // fails (e.g. functions not yet deployed) fall back to a local-only
+        // clear so the user isn't stuck.
+        try {
+          await functions().httpsCallable('deleteUserData')();
+        } catch (e) {
+          if (__DEV__) console.warn('[deleteAccount] cloud cascade failed', e);
+          await auth().currentUser?.delete();
+        }
         useUserStore.getState().reset();
       },
     }),
