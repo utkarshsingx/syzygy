@@ -1,7 +1,9 @@
 import 'react-native-gesture-handler';
 import './global.css';
 import '@/notifications/setup';
+import '@/notifications/backgroundFetch';
 
+import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -16,8 +18,15 @@ import { AuthProvider } from '@/auth/AuthProvider';
 import { RootNavigator } from '@/navigation/RootNavigator';
 import { linking } from '@/navigation/linking';
 import { colors } from '@/theme/colors';
+import { registerBackgroundFetch } from '@/notifications/backgroundFetch';
+import { autoDetectBloomQuality } from '@/lib/deviceTier';
 
 export default function App() {
+  useEffect(() => {
+    autoDetectBloomQuality();
+    registerBackgroundFetch();
+  }, []);
+
   return (
     <ErrorBoundary>
       <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.cream }}>
