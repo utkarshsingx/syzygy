@@ -1,22 +1,28 @@
 import { useState } from 'react';
 import { ScrollView, View, Text, Switch, Alert, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Atmosphere } from '@/components/atmosphere/Atmosphere';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { useToast } from '@/components/ui/Toast';
 import { useAuth } from '@/auth/AuthProvider';
+import { useIsAdmin } from '@/auth/useIsAdmin';
 import { useUserStore } from '@/stores/useUserStore';
 import { useCycleStore } from '@/stores/useCycleStore';
 import { usersRepo } from '@/data/users.repo';
 import { fonts } from '@/theme/typography';
 import { colors } from '@/theme/colors';
+import type { RootStackParamList } from '@/navigation/types';
 
 const PRIVACY_URL = 'https://bloom.app/privacy'; // TODO: actual URL in M8
 
 export function SettingsScreen() {
   const toast = useToast();
+  const nav = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const isAdmin = useIsAdmin();
   const { user, status, signOut, deleteAccount } = useAuth();
   const periodData = useCycleStore((s) => s.periodData);
   const reducedMotionOverride = useUserStore((s) => s.reducedMotionOverride);
@@ -186,6 +192,35 @@ export function SettingsScreen() {
             ))}
           </View>
         </Card>
+
+        {/* Connections */}
+        <Card className="mb-3">
+          <Text className="font-display-medium text-base text-ink mb-3">Connections</Text>
+          <Button
+            size="sm"
+            variant="secondary"
+            onPress={() => nav.navigate('Partner')}
+            className="mb-2"
+          >
+            Partner
+          </Button>
+          <Button
+            size="sm"
+            variant="secondary"
+            onPress={() => nav.navigate('Developer')}
+          >
+            About the developer
+          </Button>
+        </Card>
+
+        {isAdmin ? (
+          <Card className="mb-3">
+            <Text className="font-display-medium text-base text-ink mb-3">Admin</Text>
+            <Button size="sm" variant="primary" onPress={() => nav.navigate('AdminMusic')}>
+              Music library
+            </Button>
+          </Card>
+        ) : null}
 
         {/* Privacy */}
         <Card className="mb-3">
