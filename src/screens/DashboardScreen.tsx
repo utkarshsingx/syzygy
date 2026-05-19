@@ -1,14 +1,19 @@
 import { useRef, useState } from 'react';
 import { View, Text, useWindowDimensions, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Atmosphere } from '@/components/atmosphere/Atmosphere';
 import { BloomCanvas } from '@/components/bloom';
+import type { RootStackParamList } from '@/navigation/types';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { Reveal } from '@/components/motion/Reveal';
 import { SplitText } from '@/components/motion/SplitText';
 import { QuickLogFAB } from '@/components/log/QuickLogFAB';
 import { LogEntryModal, type LogEntryModalHandle } from '@/components/log/LogEntryModal';
+import { Sticker } from '@/components/stickers/Sticker';
+import type { StickerMode } from '@/components/stickers/types';
 import { useUserStore } from '@/stores/useUserStore';
 import { useCycleStore } from '@/stores/useCycleStore';
 import { usePhase } from '@/hooks/usePhase';
@@ -25,10 +30,18 @@ const greetings: Record<CyclePhase, string> = {
   luteal: 'A quiet unfolding.',
 };
 
+const phaseStickerMode: Record<CyclePhase, StickerMode> = {
+  menstrual: 'sad',
+  follicular: 'idle',
+  ovulation: 'cheering',
+  luteal: 'hugging',
+};
+
 export function DashboardScreen() {
   const reset = useUserStore((s) => s.reset);
   const name = useUserStore((s) => s.name);
   const loading = useCycleStore((s) => s.loading);
+  const nav = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { width } = useWindowDimensions();
   const phaseSummary = usePhase();
   const logModal = useRef<LogEntryModalHandle>(null);
@@ -75,6 +88,9 @@ export function DashboardScreen() {
             phase={phase}
             dayInPhase={dayInPhase}
           />
+          <View style={{ position: 'absolute', right: 12, top: 4 }}>
+            <Sticker id="Pip" mode={phaseStickerMode[phase]} size={72} tint={phaseColors[phase]} />
+          </View>
         </View>
 
         <View className="px-6">
@@ -115,6 +131,18 @@ export function DashboardScreen() {
               />
             </Card>
           )}
+
+          <Card className="mt-3" tone="paper">
+            <Text className="font-display-medium text-base text-ink mb-1">
+              Bring someone in
+            </Text>
+            <Text className="font-body text-sm text-ink-100/80 mb-3">
+              Share a private space with a partner.
+            </Text>
+            <Button size="sm" variant="secondary" onPress={() => nav.navigate('Partner')}>
+              Open partner
+            </Button>
+          </Card>
 
           {__DEV__ ? (
             <Button
