@@ -1,6 +1,5 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 import { View, Text, Pressable } from 'react-native';
-import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { cn } from '@/lib/cn';
 
@@ -48,23 +47,18 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         }}
       >
         {items.map((t) => (
-          <Animated.View
+          <Pressable
             key={t.id}
-            entering={FadeInDown.duration(220)}
-            exiting={FadeOutDown.duration(180)}
+            onPress={() => setItems((cur) => cur.filter((x) => x.id !== t.id))}
+            className={cn(
+              'px-4 py-3 rounded-pill border max-w-[88%]',
+              t.kind === 'success' && 'bg-sage-100 border-sage-300',
+              t.kind === 'error' && 'bg-terracotta-50 border-terracotta-300',
+              t.kind === 'info' && 'bg-paper border-ink-50/20',
+            )}
           >
-            <Pressable
-              onPress={() => setItems((cur) => cur.filter((x) => x.id !== t.id))}
-              className={cn(
-                'px-4 py-3 rounded-pill border max-w-[88%]',
-                t.kind === 'success' && 'bg-sage-100 border-sage-300',
-                t.kind === 'error' && 'bg-terracotta-50 border-terracotta-300',
-                t.kind === 'info' && 'bg-paper border-ink-50/20',
-              )}
-            >
-              <Text className="font-body-medium text-sm text-ink">{t.message}</Text>
-            </Pressable>
-          </Animated.View>
+            <Text className="font-body-medium text-sm text-ink">{t.message}</Text>
+          </Pressable>
         ))}
       </View>
     </ToastContext.Provider>
