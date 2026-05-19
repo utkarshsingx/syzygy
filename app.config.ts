@@ -13,7 +13,7 @@ const GOOGLE_SERVICES_PLIST =
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: 'Bloom',
+  name: 'syzygy',
   slug: 'bloom-app',
   scheme: SCHEME,
   version: '1.0.0',
@@ -82,7 +82,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       'expo-av',
       {
-        microphonePermission: 'Allow Bloom to record voice journal entries.',
+        microphonePermission: 'Allow syzygy to record voice journal entries.',
       },
     ],
   ],

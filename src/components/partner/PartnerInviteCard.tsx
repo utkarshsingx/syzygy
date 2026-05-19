@@ -44,7 +44,7 @@ export function PartnerInviteCard() {
     if (!code) return;
     try {
       await Share.share({
-        message: `Join me on Bloom: ${SHARE_URL_BASE}${code}`,
+        message: `Join me on syzygy: ${SHARE_URL_BASE}${code}`,
       });
     } catch (e) {
       toast.show(e instanceof Error ? e.message : 'Share failed.', 'error');

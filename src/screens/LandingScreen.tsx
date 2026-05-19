@@ -38,14 +38,29 @@ export function LandingScreen() {
           }}
           stagger={60}
         >
-          bloom
+          syzygy
         </SplitText>
 
         <View className="h-2" />
 
         <Reveal direction="up" delay={400}>
-          <Text className="font-body text-base text-ink-100 text-center max-w-xs">
-            A botanical period tracker.{'\n'}For yourself, for your person.
+          <Text
+            style={{
+              fontFamily: fonts.displayBold,
+              fontSize: 22,
+              color: colors.ink,
+              textAlign: 'center',
+            }}
+          >
+            syz on the beat 🌑
+          </Text>
+        </Reveal>
+
+        <View className="h-2" />
+
+        <Reveal direction="up" delay={600}>
+          <Text className="font-body text-sm text-ink-100 text-center max-w-xs">
+            For yourself, for your person.
           </Text>
         </Reveal>
 

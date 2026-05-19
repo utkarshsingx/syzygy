@@ -59,7 +59,7 @@ export function DashboardScreen() {
           <Reveal direction="up" delay={400}>
             <Text className="font-body text-sm text-ink-100/80 mt-1">
               {loading
-                ? 'Syncing your bloom…'
+                ? 'Aligning your phase…'
                 : phaseSummary
                   ? `Day ${phaseSummary.cycleDay} of ${phaseSummary.cycleLength}` +
                     ` · ${phaseSummary.daysUntilNextPeriod} days until next period`
@@ -81,10 +81,10 @@ export function DashboardScreen() {
           {!phaseSummary ? (
             <Card tone="tinted" className="mt-4">
               <Text className="font-display-medium text-base text-ink mb-2">
-                Preview the bloom
+                Preview the phase
               </Text>
               <Text className="font-body text-sm text-ink-100 mb-3">
-                Pick a phase to see how the bloom morphs. Real predictions arrive
+                Pick a phase to see how the peony morphs. Real predictions arrive
                 once you log a period start.
               </Text>
               <View className="flex-row flex-wrap gap-2">

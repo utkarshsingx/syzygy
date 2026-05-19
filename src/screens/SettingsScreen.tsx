@@ -172,7 +172,7 @@ export function SettingsScreen() {
               onValueChange={(v) => setReducedMotionOverride(v ? true : null)}
             />
           </View>
-          <Text className="font-body text-base text-ink mb-2">Bloom quality</Text>
+          <Text className="font-body text-base text-ink mb-2">Visual quality</Text>
           <View className="flex-row gap-2">
             {(['auto', 'high', 'low'] as const).map((q) => (
               <Button
