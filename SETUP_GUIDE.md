@@ -248,7 +248,7 @@ You'll see an empty database. We'll deploy security rules later that lock it dow
 In the left sidebar, click **Engage → Messaging**. Click any "Send your first message" type of button — you can close the message composer right away. Just being on the page is enough to register the service.
 
 ### C.6 — Upgrade to the Blaze (pay-as-you-go) plan
-
+ 
 We need this because Cloud Functions require Blaze. **You will almost certainly not be charged at low usage** — the free tier covers 2 million function calls per month.
 
 1. In the left sidebar, find your current plan name at the bottom (usually says "Spark"). Click **"Upgrade"** next to it.
