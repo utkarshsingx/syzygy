@@ -12,7 +12,7 @@ export type AppTabsParamList = {
   Calendar: undefined;
   Insights: undefined;
   Journal: undefined;
-  Partner: undefined;
+  Music: undefined;
   Settings: undefined;
 };
 
@@ -21,6 +21,9 @@ export type RootStackParamList = {
   AppTabs: NavigatorScreenParams<AppTabsParamList>;
   ShareAccept: { inviteCode: string };
   ComponentGallery: undefined;
+  Developer: undefined;
+  AdminMusic: undefined;
+  Partner: undefined;
 };
 
 declare global {

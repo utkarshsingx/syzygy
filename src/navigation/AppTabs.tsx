@@ -2,11 +2,12 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { createBottomTabNavigator, type BottomTabBarButtonProps } from '@react-navigation/bottom-tabs';
 import { PlatformPressable } from '@react-navigation/elements';
+import { Feather } from '@expo/vector-icons';
 import { DashboardScreen } from '@/screens/DashboardScreen';
 import { CalendarScreen } from '@/screens/CalendarScreen';
 import { InsightsScreen } from '@/screens/InsightsScreen';
 import { JournalScreen } from '@/screens/JournalScreen';
-import { PartnerScreen } from '@/screens/PartnerScreen';
+import { MusicScreen } from '@/screens/MusicScreen';
 import { SettingsScreen } from '@/screens/SettingsScreen';
 import { colors } from '@/theme/colors';
 import { fonts } from '@/theme/typography';
@@ -53,15 +54,49 @@ export function AppTabs() {
         },
       }}
     >
-      <Tab.Screen name="Dashboard" component={DashboardScreen} options={{ title: 'Home' }} />
-      <Tab.Screen name="Calendar" component={CalendarScreen} />
-      <Tab.Screen name="Insights" component={InsightsScreen} />
-      <Tab.Screen name="Journal" component={JournalScreen} />
-      <Tab.Screen name="Partner" component={PartnerScreen} />
+      <Tab.Screen
+        name="Dashboard"
+        component={DashboardScreen}
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color, size }) => <Feather name="home" color={color} size={size} />,
+        }}
+      />
+      <Tab.Screen
+        name="Calendar"
+        component={CalendarScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => <Feather name="calendar" color={color} size={size} />,
+        }}
+      />
+      <Tab.Screen
+        name="Insights"
+        component={InsightsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => <Feather name="bar-chart-2" color={color} size={size} />,
+        }}
+      />
+      <Tab.Screen
+        name="Journal"
+        component={JournalScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => <Feather name="edit-3" color={color} size={size} />,
+        }}
+      />
+      <Tab.Screen
+        name="Music"
+        component={MusicScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => <Feather name="music" color={color} size={size} />,
+        }}
+      />
       <Tab.Screen
         name="Settings"
         component={SettingsScreen}
-        options={{ tabBarButton: (props) => <SettingsTabButton {...props} /> }}
+        options={{
+          tabBarButton: (props) => <SettingsTabButton {...props} />,
+          tabBarIcon: ({ color, size }) => <Feather name="settings" color={color} size={size} />,
+        }}
       />
     </Tab.Navigator>
   );
