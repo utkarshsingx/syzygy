@@ -164,6 +164,7 @@ export type UserProfile = {
     dailyLogReminderTime?: string; // "HH:mm"
     partnerSummons: boolean;
   };
+  isAdmin?: boolean;
   createdAt: number;
   updatedAt: number;
 };
