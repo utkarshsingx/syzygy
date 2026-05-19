@@ -3,6 +3,8 @@ import { View, Text, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Atmosphere } from '@/components/atmosphere/Atmosphere';
 import { Card } from '@/components/ui/Card';
+import { Sticker } from '@/components/stickers/Sticker';
+import type { StickerMode } from '@/components/stickers/types';
 import { useCycleStore } from '@/stores/useCycleStore';
 import { usePhase } from '@/hooks/usePhase';
 import { fonts } from '@/theme/typography';
@@ -46,12 +48,18 @@ export function InsightsScreen() {
       <Atmosphere intensity="subtle" />
 
       <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 80 }}>
-        <Text
-          style={{ fontFamily: fonts.displayBold, fontSize: 28, color: colors.ink }}
-          className="px-2 mb-5"
-        >
-          Insights
-        </Text>
+        <View className="flex-row items-center justify-between px-2 mb-5">
+          <Text
+            style={{ fontFamily: fonts.displayBold, fontSize: 28, color: colors.ink }}
+          >
+            Insights
+          </Text>
+          <Sticker
+            id="Sunny"
+            mode={(cycleLengths.length >= 2 ? 'cheering' : 'idle') as StickerMode}
+            size={64}
+          />
+        </View>
 
         <Card className="mb-3">
           <Text className="font-display-medium text-base text-ink mb-3">

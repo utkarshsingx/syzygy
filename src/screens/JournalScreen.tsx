@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/Card';
 import { JournalEntry } from '@/components/journal/JournalEntry';
 import { JournalComposer, type JournalComposerHandle } from '@/components/journal/JournalComposer';
 import { QuickLogFAB } from '@/components/log/QuickLogFAB';
+import { Sticker } from '@/components/stickers/Sticker';
 import { useJournalStore } from '@/stores/useJournalStore';
 import { fonts } from '@/theme/typography';
 import { colors } from '@/theme/colors';
@@ -18,15 +19,18 @@ export function JournalScreen() {
     <SafeAreaView className="flex-1" edges={['top']}>
       <Atmosphere intensity="subtle" />
 
-      <View className="px-6 pt-4">
-        <Text style={{ fontFamily: fonts.displayBold, fontSize: 28, color: colors.ink }}>
-          Journal
-        </Text>
-        <Text className="font-body text-sm text-ink-100/80 mt-1 mb-4">
-          {entries.length === 0
-            ? 'A small inbox for your inner weather.'
-            : `${entries.length} entr${entries.length === 1 ? 'y' : 'ies'}.`}
-        </Text>
+      <View className="px-6 pt-4 flex-row items-center justify-between">
+        <View className="flex-1">
+          <Text style={{ fontFamily: fonts.displayBold, fontSize: 28, color: colors.ink }}>
+            Journal
+          </Text>
+          <Text className="font-body text-sm text-ink-100/80 mt-1 mb-4">
+            {entries.length === 0
+              ? 'A small inbox for your inner weather.'
+              : `${entries.length} entr${entries.length === 1 ? 'y' : 'ies'}.`}
+          </Text>
+        </View>
+        <Sticker id="Moonie" mode="idle" size={64} />
       </View>
 
       <FlatList
