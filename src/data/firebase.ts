@@ -35,4 +35,6 @@ export const paths = {
   message: (coupleId: string, id: string) => `couples/${coupleId}/messages/${id}`,
   inviteCodes: () => `inviteCodes`,
   inviteCode: (code: string) => `inviteCodes/${code}`,
+  music: () => `music`,
+  musicTrack: (id: string) => `music/${id}`,
 };

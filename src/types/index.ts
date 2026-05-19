@@ -167,3 +167,6 @@ export type UserProfile = {
   createdAt: number;
   updatedAt: number;
 };
+
+export type { Track, TrackMood } from './music';
+export { TRACK_MOODS } from './music';
