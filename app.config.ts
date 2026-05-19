@@ -15,6 +15,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: 'syzygy',
   slug: 'bloom-app',
+  owner: 'utkarshsingx',
   scheme: SCHEME,
   version: '1.0.0',
   orientation: 'portrait',
@@ -88,7 +89,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ],
   extra: {
     eas: {
-      projectId: process.env.EAS_PROJECT_ID ?? undefined,
+      projectId: process.env.EAS_PROJECT_ID ?? 'aef10b21-745a-4d5a-b510-1c5a11a4940c',
     },
   },
   experiments: {
